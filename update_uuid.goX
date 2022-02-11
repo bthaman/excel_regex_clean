@@ -1,0 +1,84 @@
+package main
+
+import (
+	"crypto/rand"
+	"dirs"
+	"fmt"
+	"log"
+	"regexp"
+	"strconv"
+	"time"
+
+	"github.com/360EntSecGroup-Skylar/excelize"
+)
+
+func main() {
+	var first_blank_row int
+	files, _ := dirs.Walk_Dir_Info(".")
+	for i, f := range files {
+		matched, _ := regexp.Match(`.*ESSA.*\.xlsm$`, []byte(f))
+		if matched {
+			fmt.Println(i, f)
+			xlsx, err := excelize.OpenFile(f)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			rows, _ := xlsx.GetRows("Settings")
+			for i, row := range rows {
+				if len(row) >= 19 {
+					if len(row[18]) > 0 {
+						fmt.Println(i+1, row[18])
+					} else {
+						first_blank_row = i + 1
+						break
+					}
+				} else {
+					first_blank_row = i + 1
+					break
+				}
+			}
+			cellname, _ := CoordinatesToCellName(19, first_blank_row)
+			xlsx.SetCellValue("Settings", cellname, create_uuid())
+			cellname, _ = CoordinatesToCellName(20, first_blank_row)
+			xlsx.SetCellValue("Settings", cellname, time.Now().Format("01/02/2006 15:04:05"))
+			if err := xlsx.Save(); err != nil {
+				println(err.Error())
+			}
+		}
+	}
+}
+
+func create_uuid() string {
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		log.Fatal(err)
+	}
+	uuid := fmt.Sprintf("%X-%X-%X-%X-%X",
+		b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+	return uuid
+}
+
+func ColumnNumberToName(num int) (string, error) {
+	if num < 1 {
+		return "", fmt.Errorf("incorrect column number %d", num)
+	}
+	if num > 16384 {
+		return "", fmt.Errorf("column number exceeds maximum limit")
+	}
+	var col string
+	for num > 0 {
+		col = string(rune((num-1)%26+65)) + col
+		num = (num - 1) / 26
+	}
+	return col, nil
+}
+
+func CoordinatesToCellName(col, row int) (string, error) {
+	if col < 1 || row < 1 {
+		return "", fmt.Errorf("invalid cell coordinates [%d, %d]", col, row)
+	}
+	colname, err := ColumnNumberToName(col)
+	return colname + strconv.Itoa(row), err
+}

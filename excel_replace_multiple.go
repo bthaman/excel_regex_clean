@@ -64,7 +64,7 @@ func clean_data(fn string, sheet_regex string, cell_regex string, searchreplace_
 			rows, _ := xlsx.GetRows(name)
 			for r, row := range rows {
 				for c, colCell := range row {
-					if len(colCell) > 0 {
+					if len(colCell) >= 0 {
 						cell_address, _ = CoordinatesToCellName(c+1, r+1)
 						match_cell, _ := regexp.Match(cell_regex, []byte(cell_address))
 						if match_cell {
@@ -89,14 +89,14 @@ func clean_data(fn string, sheet_regex string, cell_regex string, searchreplace_
 						}
 					} else {
 						cell_address, _ = CoordinatesToCellName(c+1, r+1)
-						// set cell to value_if_blank
-						if f, err := strconv.ParseFloat(value_if_blank, 32); err != nil {
-							// if error converting to float, set cell to text value
-							xlsx.SetCellValue(name, cell_address, value_if_blank)
-						} else {
-							// if val_new successfully converted to float, assign the float to cell
-							xlsx.SetCellFloat(name, cell_address, f, 4, 32)
-						}
+						// // set cell to value_if_blank
+						// if f, err := strconv.ParseFloat(value_if_blank, 32); err != nil {
+						// 	// if error converting to float, set cell to text value
+						// 	xlsx.SetCellValue(name, cell_address, value_if_blank)
+						// } else {
+						// 	// if val_new successfully converted to float, assign the float to cell
+						// 	xlsx.SetCellFloat(name, cell_address, f, 4, 32)
+						// }
 					}
 				}
 			}

@@ -35,13 +35,11 @@ title = "Settings for excel_replace_multiple"
 # cells within those sheets, that will be updated.
 #
 [search]
-wb_regex = "^sandbox.xlsm$"
-sheet_regex = "^Sheet2$"
-cell_regex = "[A-GJ-N]([2-9]$|[1-9][0-9]+)"
+wb_regex = "^ESSA_TOMAHAWK_v4.2_23_30_13.xlsm$"
+sheet_regex = "^ESS_\\d+"
+cell_regex = "^J5$"
 searchreplace_regex = [
-    ["NULL", "0"],
-    ["-+", "-"],
-    ["-?[^\\d\\.-]", ""]
+    [".*", "Warranty Date"]
 ]
 value_if_blank = "0"
 ###########################################################################

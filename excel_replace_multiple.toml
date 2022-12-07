@@ -41,6 +41,7 @@ cell_regex = "^E10$"
 searchreplace_regex = [
     ["Engineered Air", "Engineered Air, Inc."]
 ]
+replace_blanks = "FALSE"
 value_if_blank = "0"
 ###########################################################################
 ############################ END TOML SETTINGS ############################

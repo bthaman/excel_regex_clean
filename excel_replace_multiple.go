@@ -19,6 +19,7 @@ type tomlConfig struct {
 		Sheet_regex         string
 		Cell_regex          string
 		Searchreplace_regex [][]string
+		Replace_blanks		string
 		Value_if_blank      string
 	}
 }
@@ -37,6 +38,7 @@ func main() {
 	sheet_regex := config.Search.Sheet_regex
 	cell_regex := config.Search.Cell_regex
 	searchreplace_regex := config.Search.Searchreplace_regex
+	// replace_blanks := config.Search.Replace_blanks
 	value_if_blank := config.Search.Value_if_blank
 
 	files, _ := dirs.Walk_Dir_Info(".")

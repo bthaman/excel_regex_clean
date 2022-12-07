@@ -37,9 +37,9 @@ title = "Settings for excel_replace_multiple"
 [search]
 wb_regex = "^ESSA_TOMAHAWK_v4.2_23_30_13.xlsm$"
 sheet_regex = "^ESS_\\d+"
-cell_regex = "^J5$"
+cell_regex = "^E10$"
 searchreplace_regex = [
-    [".*", "Warranty Date"]
+    ["Engineered Air", "Engineered Air, Inc."]
 ]
 value_if_blank = "0"
 ###########################################################################

@@ -66,6 +66,11 @@ value_if_blank = "0"
 #                        e.g., to represent two regex expressions and two corresponding replacement strings:
 #                        [["regex_1", "replacement_string_1], ["regex_2", "replacement_string_2"]]
 #                        where regex_# = pattern to match, and replacement_string_# = string that replaces pattern
+#   replace_blanks:      "TRUE"/"FALSE" flag indicating whether blanks should be replaced within the used range of each
+#                        matched worksheet.
+#   value_if_blank:      if replace_blanks is "TRUE", value used to replace blanks within the used range.
+#                        the value must be entered as text (e.g., "0") -- if the value can be converted to a float,
+#                        the float will be written to each blank cell; otherwise text will be written.
 #
 # NOTES:
 #   <1>  wb_regex should resolve to a valid .xlsx/.xlsm Excel file (e.g., don't use ".*"). 

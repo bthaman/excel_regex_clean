@@ -38,7 +38,7 @@ func main() {
 	sheet_regex := config.Search.Sheet_regex
 	cell_regex := config.Search.Cell_regex
 	searchreplace_regex := config.Search.Searchreplace_regex
-	// replace_blanks := config.Search.Replace_blanks
+	replace_blanks := config.Search.Replace_blanks
 	value_if_blank := config.Search.Value_if_blank
 
 	files, _ := dirs.Walk_Dir_Info(".")
@@ -46,12 +46,12 @@ func main() {
 		matched, _ := regexp.Match(wb_regex, []byte(f))
 		if matched {
 			fmt.Println(i, f)
-			clean_data(f, sheet_regex, cell_regex, searchreplace_regex, value_if_blank)
+			clean_data(f, sheet_regex, cell_regex, searchreplace_regex, replace_blanks, value_if_blank)
 		}
 	}
 }
 
-func clean_data(fn string, sheet_regex string, cell_regex string, searchreplace_regex [][]string, value_if_blank string) {
+func clean_data(fn string, sheet_regex string, cell_regex string, searchreplace_regex [][]string, replace_blanks string, value_if_blank string) {
 	xlsx, err := excelize.OpenFile(fn)
 	if err != nil {
 		fmt.Println(err)
@@ -79,26 +79,29 @@ func clean_data(fn string, sheet_regex string, cell_regex string, searchreplace_
 									// re-assign colCell so that successive ReplaceAllStrings can be applied to the last value
 									colCell = val_new
 									// attempt to convert val_new to a float
-									if f, err := strconv.ParseFloat(val_new, 32); err != nil {
+									if flt, err := strconv.ParseFloat(val_new, 32); err != nil {
 										// if error converting to float, set cell to text value
 										xlsx.SetCellValue(name, cell_address, val_new)
 									} else {
 										// if val_new successfully converted to float, assign the float to cell
-										xlsx.SetCellFloat(name, cell_address, f, 4, 32)
+										xlsx.SetCellFloat(name, cell_address, flt, 4, 32)
 									}
 								}
 							}
 						}
-					} else {
-						cell_address, _ = CoordinatesToCellName(c+1, r+1)
-						// // set cell to value_if_blank
-						// if f, err := strconv.ParseFloat(value_if_blank, 32); err != nil {
-						// 	// if error converting to float, set cell to text value
-						// 	xlsx.SetCellValue(name, cell_address, value_if_blank)
-						// } else {
-						// 	// if val_new successfully converted to float, assign the float to cell
-						// 	xlsx.SetCellFloat(name, cell_address, f, 4, 32)
-						// }
+					} 
+					if replace_blanks == "TRUE" {
+						if len(colCell) == 0 {
+							cell_address, _ = CoordinatesToCellName(c+1, r+1)
+							// set cell to value_if_blank
+							if flt, err := strconv.ParseFloat(value_if_blank, 32); err != nil {
+								// if error converting to float, set cell to text value
+								xlsx.SetCellValue(name, cell_address, value_if_blank)
+							} else {
+								// if val_new successfully converted to float, assign the float to cell
+								xlsx.SetCellFloat(name, cell_address, flt, 4, 32)
+							}	
+						}
 					}
 				}
 			}

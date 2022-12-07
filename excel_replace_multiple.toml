@@ -37,16 +37,17 @@ title = "Settings for excel_replace_multiple"
 [search]
 wb_regex = "^sandbox.xlsm$"
 sheet_regex = "^Sheet2$"
-cell_regex = "^H([2-9]?$|[1-9]\\d+)"
+cell_regex = "^I([2-9]?$|[1-9]\\d+)"
 searchreplace_regex = [
     ["(^\\s+|\\s+$)", ""],
     ["\\s+", " "],
-    [".*", "Better values..."]
+    ["blanks", "was blanks"],
+    ["here", "here!!!"]
 ]
 # if replace_blanks = "TRUE" then the value of value_if_blank will
 # be assigned to ALL blank cells within the used range: i.e., no regex
 # applied.
-replace_blanks = "FALSE"
+replace_blanks = "TRUE"
 value_if_blank = "0"
 ###########################################################################
 ############################ END TOML SETTINGS ############################
@@ -95,7 +96,7 @@ value_if_blank = "0"
 #   "^ESS_\\d+"               sheet name starts with "ESS_" and is followed by a number (e.g., "ESSA_19")
 #   "\\s*\\|+\\s*"            strip adjacent white space from vertical bar "|". Use replace_string="|" (e.g., for ESSA Attributes sheet)
 #   "[^\\d\\.]"               everything that is NOT a number or a decimal point. replace with "". Used to strip text from numbers.
-#   "^H([2-9]?$|[1-9]\\d+)"   Column H, row > 1
+#   "^H([2-9]?$|[1-9]\\d+)"   Column H, row > 1 (everything but the header row)
 #   "G([123]?[0-9]$|[4][0]$)" if for cell_regex, matches rows G1-G40
 #   "E([2][9]$|[3-9][0-9]$|[1][0-6][0-9]$|[1][7][0-3]$)" if for cell_regex, rows E29-E173
 #   "(^[G-Z]\\d+|[A-D][A-Z]\\d+|[E][A-U]\\d+)" if for cell_regex, columns G-EU

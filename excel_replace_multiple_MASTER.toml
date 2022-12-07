@@ -99,7 +99,7 @@ value_if_blank = "0"
 #   "-?[^\\d\\.-]"            everything that is NOT a number, decimal point, or leading - (minus sign). replace with "". Used to strip text from numbers.
 #                             keeps a leading minus sign. recommend that repetitive minus signs be removed first.
 #   "[A-GJ-M]([2-9]$|[1-9][0-9]+)" if for cell_regex matches columns A-G and J-M, rows 2 and above (preserves column headers in first row)
-#   "^H([2-9]?$|[1-9]\\d+)"   Column H, row > 1
+#   "^H([2-9]?$|[1-9]\\d+)"   Column H, row > 1 (everything but the header row)
 #   "G([123]?[0-9]$|[4][0]$)" if for cell_regex, matches rows G1-G40
 #   "E([2][9]$|[3-9][0-9]$|[1][0-6][0-9]$|[1][7][0-3]$)" if for cell_regex, rows E29-E173
 #   "(^[G-Z]\\d+|[A-D][A-Z]\\d+|[E][A-U]\\d+)" if for cell_regex, columns G-EU
